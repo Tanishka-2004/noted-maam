@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Speech to Text</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    button {
+      padding: 10px 15px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    #output {
+      margin-top: 20px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      min-height: 50px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Speech to Text</h1>
+  <button id="startBtn">Start Listening</button>
+  <div id="output">Your speech will appear here...</div>
+
+  <script>
+    const startBtn = document.getElementById("startBtn");
+    const output = document.getElementById("output");
+
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (!SpeechRecognition) {
+      output.textContent = "Speech Recognition not supported in this browser.";
+      startBtn.disabled = true;
+    } else {
+      const recognition = new SpeechRecognition();
+      recognition.lang = "en-US";
+      recognition.continuous = false;
+      recognition.interimResults = false;
+
+      startBtn.addEventListener("click", () => {
+        recognition.start();
+        output.textContent = "Listening...";
+      });
+
+      recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        output.textContent = transcript;
+      };
+
+      recognition.onerror = (event) => {
+        output.textContent = "Error: " + event.error;
+      };
+    }
+  </script>
+
+</body>
+</html>
