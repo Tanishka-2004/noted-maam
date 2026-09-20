@@ -1,0 +1,31 @@
+{
+  "manifest_version": 3,
+  "name": "Noted Ma'am — Meeting Operating System",
+  "version": "1.0.0",
+  "description": "Convert multilingual Google Meet and Zoom sessions into structured notes and action items.",
+  "permissions": [
+    "sidePanel",
+    "activeTab",
+    "scripting",
+    "audioCapture"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "Open Noted Ma'am"
+  },
+  "side_panel": {
+    "default_path": "index.html"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://meet.google.com/*",
+        "https://*.zoom.us/*"
+      ],
+      "js": ["content.js"],
+      "run_at": "document_end"
+    }
+  ]
+}

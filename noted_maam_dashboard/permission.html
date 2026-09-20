@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Microphone Activation — Noted Ma'am</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: #FFFAFA; /* Snow White */
+      color: #1a1a2e;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+    .card {
+      background: rgba(255, 255, 240, 0.7); /* Ivory Glass */
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 20px;
+      padding: 40px;
+      max-width: 450px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.06);
+      backdrop-filter: blur(16px);
+      animation: fadeIn 0.4s ease;
+    }
+    .logo {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #6B8F3B, #527A2D); /* Olive */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      color: white;
+      font-size: 1.4rem;
+      margin: 0 auto 24px auto;
+      box-shadow: 0 8px 25px rgba(107, 143, 59, 0.25);
+    }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    p {
+      font-size: 0.9rem;
+      color: #6b6b8a;
+      line-height: 1.6;
+      margin-bottom: 30px;
+    }
+    .btn {
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 0.95rem;
+      padding: 14px 28px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+      transition: all 0.25s ease;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #6B8F3B, #527A2D);
+      color: white;
+      box-shadow: 0 4px 15px rgba(107, 143, 59, 0.3);
+    }
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(107, 143, 59, 0.4);
+    }
+    .success-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #10b981;
+      font-weight: 700;
+      background: rgba(16, 185, 129, 0.1);
+      padding: 8px 16px;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      margin-top: 10px;
+    }
+    .error-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #ef4444;
+      font-weight: 700;
+      background: rgba(239, 68, 68, 0.1);
+      padding: 8px 16px;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      margin-top: 10px;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="card" id="main-card">
+    <div class="logo">NM</div>
+    <h2>Enable Voice Transcription</h2>
+    <p>Noted Ma'am requires microphone permission to listen to your voice and convert it to transcripts in your Google Meet/Zoom side panels.</p>
+    
+    <button class="btn btn-primary" id="btn-grant">Grant Permission</button>
+    
+    <div id="success-state" style="display: none;">
+      <div class="success-badge">✓ Active Permission Granted</div>
+      <p style="margin-top: 15px; margin-bottom: 0;">You can close this tab and start live transcribing in the workspace!</p>
+    </div>
+
+    <div id="error-state" style="display: none;">
+      <div class="error-badge">⚠ Permission Setup Failed</div>
+      <p id="error-message" style="margin-top: 15px; margin-bottom: 0; color: #ef4444; font-weight: 600;"></p>
+    </div>
+  </div>
+
+  <script>
+    // Global Error Catcher for Debugging
+    window.onerror = function(message, source, lineno, colno, error) {
+      const card = document.getElementById("main-card");
+      if (card) {
+        card.innerHTML = `
+          <div class="error-badge">⚠ Global Exception Caught</div>
+          <p style="color:#ef4444; font-weight:600; margin-top:15px; text-align:left; font-size:11px;">
+            Message: ${message}<br>
+            Line: ${lineno}:${colno}
+          </p>
+        `;
+      }
+      return true;
+    };
+
+    const btn = document.getElementById("btn-grant");
+    const successState = document.getElementById("success-state");
+    const errorState = document.getElementById("error-state");
+    const errorMessage = document.getElementById("error-message");
+
+    btn.addEventListener("click", async () => {
+      console.log("Grant Permission button clicked.");
+      
+      // 1. Check if mediaDevices exists
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        btn.style.display = "none";
+        errorMessage.innerText = "Audio capture is not supported by your browser in this context (requires HTTPS or localhost).";
+        errorState.style.display = "block";
+        return;
+      }
+
+      try {
+        console.log("Requesting getUserMedia stream...");
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        console.log("Stream successfully acquired.");
+        
+        // Stop stream immediately
+        stream.getTracks().forEach(track => track.stop());
+        
+        btn.style.display = "none";
+        errorState.style.display = "none";
+        successState.style.display = "block";
+        
+        // Auto close after 2 seconds
+        setTimeout(() => {
+          window.close();
+        }, 2200);
+      } catch (err) {
+        console.error("getUserMedia Exception:", err);
+        btn.style.display = "none";
+        errorMessage.innerText = "Error: " + err.name + " - " + err.message;
+        errorState.style.display = "block";
+      }
+    });
+  </script>
+</body>
+</html>
