@@ -3,6 +3,9 @@ import type { Metadata } from "next";
 import "../styles/globals.css";
 import { AuthProvider } from "../features/auth/auth-provider";
 import { AppModeProvider } from "../context/AppModeContext";
+import { LiveMeetingProvider } from "../context/LiveMeetingContext";
+import { LiveMeetingBar } from "../components/LiveMeetingBar";
+import { LiveMeetingModal } from "../components/LiveMeetingModal";
 
 export const metadata: Metadata = {
   title: "Noted Ma'am — Meeting Operating System",
@@ -16,14 +19,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="antialiased bg-[#FBF8F1] text-[#4A1724] selection:bg-[#681F32] selection:text-[#FBF8F1]">
+      <body className="antialiased bg-[#4A1724] text-[#FBF8F1] selection:bg-[#681F32] selection:text-[#FBF8F1]">
         <AuthProvider>
           <AppModeProvider>
-            {children}
+            <LiveMeetingProvider>
+              {children}
+              <LiveMeetingBar />
+              <LiveMeetingModal />
+            </LiveMeetingProvider>
           </AppModeProvider>
         </AuthProvider>
       </body>
     </html>
   );
 }
-

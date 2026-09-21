@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Navigation } from "../../../components/Navigation";
 import { TrustBadge } from "../../../components/TrustBadge";
 import { useAppMode } from "../../../context/AppModeContext";
+import { useLiveMeeting } from "../../../context/LiveMeetingContext";
 import { fetchLiveMeetings, RealMeeting } from "../../../lib/api-client";
 import { 
   Video, 
@@ -14,11 +15,13 @@ import {
   Clock, 
   ArrowRight, 
   Search, 
-  Plus
+  Plus,
+  Mic
 } from "lucide-react";
 
 export default function AppMeetingsPage() {
   const { mode } = useAppMode();
+  const { startMeeting } = useLiveMeeting();
   const [activeTab, setActiveTab] = useState<"all" | "unassigned" | "assigned">("all");
   const [searchTerm, setSearchTerm] = useState("");
   const [realMeetings, setRealMeetings] = useState<RealMeeting[]>([]);
@@ -101,13 +104,23 @@ export default function AppMeetingsPage() {
             <p className="text-xs text-[#E9DFCE] font-medium mt-1">Upload meeting recordings first; assign to primary projects anytime.</p>
           </div>
 
-          <Link
-            href="/onboarding"
-            className="px-4 py-2.5 rounded-xl bg-[#FBF8F1] hover:bg-[#F7F1E5] text-[#4A1724] font-bold text-xs flex items-center gap-2 transition-all shadow-md"
-          >
-            <Plus className="w-4 h-4 text-[#4A1724]" />
-            <span>Upload New Recording</span>
-          </Link>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => startMeeting()}
+              className="px-4 py-2.5 rounded-xl bg-rose-700 hover:bg-rose-800 text-[#FBF8F1] font-bold text-xs flex items-center gap-2 transition-all shadow-md"
+            >
+              <Mic className="w-4 h-4 text-[#FBF8F1] animate-pulse" />
+              <span>Start Live Meeting Assistant</span>
+            </button>
+
+            <Link
+              href="/onboarding"
+              className="px-4 py-2.5 rounded-xl bg-[#5C1D2D] hover:bg-[#681F32] border border-[#7A2940] text-[#FBF8F1] font-bold text-xs flex items-center gap-2 transition-all"
+            >
+              <Plus className="w-4 h-4 text-[#FBF8F1]" />
+              <span>Upload Manual File</span>
+            </Link>
+          </div>
         </div>
 
         {/* Search Bar */}

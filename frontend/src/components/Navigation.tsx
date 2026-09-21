@@ -4,6 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAppMode } from "../context/AppModeContext";
+import { useLiveMeeting } from "../context/LiveMeetingContext";
 import { 
   Home, 
   Video, 
@@ -13,12 +14,14 @@ import {
   Settings, 
   Sparkles,
   Plus,
-  ArrowRightLeft
+  ArrowRightLeft,
+  Mic
 } from "lucide-react";
 
 export function Navigation() {
   const pathname = usePathname();
   const { mode, toggleMode } = useAppMode();
+  const { isRecording, startMeeting, openModal } = useLiveMeeting();
 
   const navItems = [
     { label: "Home", path: "/app/home", icon: Home },
@@ -92,14 +95,24 @@ export function Navigation() {
             <ArrowRightLeft className="w-3 h-3 text-[#E9DFCE]" />
           </button>
 
-          {/* Upload Meeting Button */}
-          <Link
-            href="/onboarding"
-            className="px-3.5 py-1.5 rounded-xl bg-[#FBF8F1] hover:bg-[#F7F1E5] text-[#4A1724] text-xs font-bold transition-all flex items-center gap-1.5 shadow-sm"
-          >
-            <Plus className="w-3.5 h-3.5 text-[#4A1724]" />
-            <span>Upload Meeting</span>
-          </Link>
+          {/* Live Meeting Launcher Button */}
+          {isRecording ? (
+            <button
+              onClick={openModal}
+              className="px-3.5 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-[#FBF8F1] text-xs font-bold transition-all flex items-center gap-2 shadow-sm animate-pulse"
+            >
+              <span className="w-2 h-2 rounded-full bg-white animate-ping" />
+              <span>Recording Live</span>
+            </button>
+          ) : (
+            <button
+              onClick={() => startMeeting()}
+              className="px-3.5 py-1.5 rounded-xl bg-[#FBF8F1] hover:bg-[#F7F1E5] text-[#4A1724] text-xs font-bold transition-all flex items-center gap-1.5 shadow-sm"
+            >
+              <Mic className="w-3.5 h-3.5 text-rose-700" />
+              <span>Start Live Meeting</span>
+            </button>
+          )}
         </div>
       </div>
 
