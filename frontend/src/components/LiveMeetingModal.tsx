@@ -26,12 +26,14 @@ export function LiveMeetingModal() {
     elapsedSeconds, 
     meetingTitle, 
     selectedProject, 
+    audioSourceMode,
     transcript, 
     extractedItems, 
     pauseMeeting, 
     resumeMeeting, 
     endMeeting, 
     closeModal,
+    setAudioSourceMode,
     setSelectedProject,
     setMeetingTitle 
   } = useLiveMeeting();
@@ -92,7 +94,7 @@ export function LiveMeetingModal() {
         </div>
 
         {/* Live Audio Visualizer Bar */}
-        <div className="px-6 py-3 bg-[#4A1724] border-b border-[#681F32] flex items-center justify-between gap-4">
+        <div className="px-6 py-3 bg-[#4A1724] border-b border-[#681F32] flex flex-col sm:flex-row items-center justify-between gap-3">
           <div className="flex items-center gap-2">
             <div className="flex items-end gap-1 h-5">
               <div className="w-1 bg-rose-500 rounded animate-bounce h-3" />
@@ -101,13 +103,40 @@ export function LiveMeetingModal() {
               <div className="w-1 bg-emerald-400 rounded animate-bounce h-4 delay-100" />
             </div>
             <span className="text-xs font-semibold text-[#E9DFCE]">
-              {isPaused ? "Recording Paused" : "Microphone active · Transcribing and extracting live"}
+              {isPaused ? "Recording Paused" : "System & Mic Audio Active · Capturing headphones & room live"}
             </span>
           </div>
 
-          <div className="flex items-center gap-2 text-xs font-semibold text-[#E9DFCE]">
-            <ShieldCheck className="w-4 h-4 text-emerald-400" />
-            <span>Consent Policy: <strong className="text-[#FBF8F1]">COMPLIANCE_RULE</strong></span>
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-1.5 bg-[#5C1D2D] p-1 rounded-xl border border-[#7A2940]">
+              <button
+                onClick={() => setAudioSourceMode("SYSTEM_TAB_AUDIO")}
+                className={`px-3 py-1 rounded-lg text-[11px] font-bold transition-all ${
+                  audioSourceMode === "SYSTEM_TAB_AUDIO" 
+                    ? "bg-[#FBF8F1] text-[#4A1724]" 
+                    : "text-[#E9DFCE] hover:text-[#FBF8F1]"
+                }`}
+                title="Captures computer / Meet / Zoom tab audio directly (Required when wearing headphones)"
+              >
+                🎧 System/Tab Audio (Headphones)
+              </button>
+              <button
+                onClick={() => setAudioSourceMode("MIC_ONLY")}
+                className={`px-3 py-1 rounded-lg text-[11px] font-bold transition-all ${
+                  audioSourceMode === "MIC_ONLY" 
+                    ? "bg-[#FBF8F1] text-[#4A1724]" 
+                    : "text-[#E9DFCE] hover:text-[#FBF8F1]"
+                }`}
+                title="Captures room microphone audio only"
+              >
+                🎙️ Mic Only
+              </button>
+            </div>
+
+            <div className="hidden md:flex items-center gap-1.5 text-xs font-semibold text-[#E9DFCE]">
+              <ShieldCheck className="w-4 h-4 text-emerald-400" />
+              <span>Consent: <strong className="text-[#FBF8F1]">COMPLIANCE_RULE</strong></span>
+            </div>
           </div>
         </div>
 

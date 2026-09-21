@@ -27,14 +27,16 @@ interface LiveMeetingContextType {
   elapsedSeconds: number;
   meetingTitle: string;
   selectedProject: string;
+  audioSourceMode: "MIC_ONLY" | "SYSTEM_TAB_AUDIO";
   transcript: LiveTranscriptItem[];
   extractedItems: LiveExtractedItem[];
-  startMeeting: (title?: string, project?: string) => void;
+  startMeeting: (title?: string, project?: string, sourceMode?: "MIC_ONLY" | "SYSTEM_TAB_AUDIO") => void;
   pauseMeeting: () => void;
   resumeMeeting: () => void;
   endMeeting: () => void;
   openModal: () => void;
   closeModal: () => void;
+  setAudioSourceMode: (mode: "MIC_ONLY" | "SYSTEM_TAB_AUDIO") => void;
   setSelectedProject: (proj: string) => void;
   setMeetingTitle: (title: string) => void;
 }
@@ -117,6 +119,7 @@ export function LiveMeetingProvider({ children }: { children: React.ReactNode })
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const [meetingTitle, setMeetingTitle] = useState("Live Sync — Q3 Product & Auth Architecture");
   const [selectedProject, setSelectedProject] = useState("Project Alpha");
+  const [audioSourceMode, setAudioSourceMode] = useState<"MIC_ONLY" | "SYSTEM_TAB_AUDIO">("SYSTEM_TAB_AUDIO");
   const [transcript, setTranscript] = useState<LiveTranscriptItem[]>([]);
   const [extractedItems, setExtractedItems] = useState<LiveExtractedItem[]>([]);
 
@@ -171,17 +174,26 @@ export function LiveMeetingProvider({ children }: { children: React.ReactNode })
     };
   }, [isRecording, isPaused, elapsedSeconds]);
 
-  const startMeeting = async (title?: string, project?: string) => {
+  const startMeeting = async (title?: string, project?: string, sourceMode?: "MIC_ONLY" | "SYSTEM_TAB_AUDIO") => {
     if (title) setMeetingTitle(title);
     if (project) setSelectedProject(project);
+    const chosenMode = sourceMode || audioSourceMode;
 
     try {
-      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        mediaStreamRef.current = stream;
+      if (chosenMode === "SYSTEM_TAB_AUDIO" && navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia) {
+        // System / Tab Audio capture (captures speaker audio directly when wearing headphones!)
+        const displayStream = await navigator.mediaDevices.getDisplayMedia({
+          audio: true,
+          video: true
+        });
+        mediaStreamRef.current = displayStream;
+      } else if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        // Mic-only fallback
+        const micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        mediaStreamRef.current = micStream;
       }
     } catch (e) {
-      console.warn("Microphone access prompt bypassed or not granted:", e);
+      console.warn("Audio stream permission prompt bypassed or canceled:", e);
     }
 
     setIsRecording(true);
@@ -219,6 +231,7 @@ export function LiveMeetingProvider({ children }: { children: React.ReactNode })
         elapsedSeconds,
         meetingTitle,
         selectedProject,
+        audioSourceMode,
         transcript,
         extractedItems,
         startMeeting,
@@ -227,6 +240,7 @@ export function LiveMeetingProvider({ children }: { children: React.ReactNode })
         endMeeting,
         openModal,
         closeModal,
+        setAudioSourceMode,
         setSelectedProject,
         setMeetingTitle,
       }}
