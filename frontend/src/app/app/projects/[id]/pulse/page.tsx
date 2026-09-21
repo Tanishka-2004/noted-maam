@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { Navigation } from "../../../../../components/Navigation";
 import { TrustBadge } from "../../../../../components/TrustBadge";
-import { DemoModeBanner } from "../../../../../components/DemoModeBanner";
 import { 
   Activity, 
   AlertOctagon, 
@@ -63,29 +62,28 @@ export default function AppProjectPulsePage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#FBF8F1] text-[#4A1724] pb-16">
-      <DemoModeBanner />
+    <div className="min-h-screen bg-[#4A1724] text-[#FBF8F1] pb-16 font-sans">
       <Navigation />
 
       <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 space-y-8">
         
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#CDBEA9] pb-6">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#681F32] pb-6">
           <div>
-            <div className="flex items-center gap-2 text-xs font-mono text-[#681F32] font-bold mb-1">
-              <Activity className="w-4 h-4 text-[#681F32]" />
+            <div className="flex items-center gap-2 text-xs font-semibold text-[#E9DFCE] mb-1">
+              <Activity className="w-4 h-4 text-[#FBF8F1]" />
               <span>Project Pulse — Change Detection Engine</span>
             </div>
-            <h1 className="text-3xl font-extrabold text-[#4A1724] tracking-tight">Project Alpha Pulse</h1>
-            <p className="text-xs text-[#96546A] font-medium mt-1">Answers <strong>"What changed since last week?"</strong> using deterministic status counters.</p>
+            <h1 className="text-3xl font-extrabold text-[#FBF8F1] tracking-tight font-display">Project Alpha Pulse</h1>
+            <p className="text-xs text-[#E9DFCE] font-medium mt-1">Answers <strong>"What changed since last week?"</strong> using deterministic status counters.</p>
           </div>
 
           <div className="flex items-center gap-3">
             <Link
-              href="/app/knowledge?tab=decisions"
-              className="px-4 py-2 rounded-xl bg-[#681F32] text-[#FBF8F1] text-xs font-semibold hover:bg-[#4A1724] transition-all flex items-center gap-2 shadow-md"
+              href="/app/knowledge"
+              className="px-4 py-2 rounded-xl bg-[#FBF8F1] text-[#4A1724] text-xs font-bold hover:bg-[#F7F1E5] transition-all flex items-center gap-2 shadow-md"
             >
-              <GitCommit className="w-3.5 h-3.5 text-[#FBF8F1]" />
+              <GitCommit className="w-3.5 h-3.5 text-[#4A1724]" />
               <span>View Decision Timeline</span>
             </Link>
           </div>
@@ -94,52 +92,52 @@ export default function AppProjectPulsePage() {
         {/* Deterministic Health Counters Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {pulseCounters.map((counter, i) => (
-            <div key={i} className="p-6 rounded-2xl bg-[#F7F1E5] border border-[#CDBEA9] space-y-3 hover:border-[#7A2940] transition-all">
+            <div key={i} className="p-6 rounded-2xl bg-[#5C1D2D] border border-[#7A2940] space-y-3 hover:border-[#96546A] transition-all shadow-md">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-[#4A1724] uppercase tracking-wider">{counter.label}</span>
+                <span className="text-xs font-bold text-[#FBF8F1] uppercase tracking-wider">{counter.label}</span>
                 <TrustBadge state={counter.badge} size="sm" />
               </div>
               <div className="flex items-baseline gap-2">
-                <span className="text-4xl font-extrabold text-[#681F32]">{counter.value}</span>
-                <span className="text-xs text-[#96546A] font-mono">{counter.unit}</span>
+                <span className="text-4xl font-extrabold text-[#FBF8F1]">{counter.value}</span>
+                <span className="text-xs text-[#E9DFCE] font-medium">{counter.unit}</span>
               </div>
-              <div className="text-[11px] text-[#96546A] border-t border-[#CDBEA9] pt-2 flex items-center justify-between">
+              <div className="text-[11px] text-[#E9DFCE] border-t border-[#7A2940] pt-2 flex items-center justify-between font-medium">
                 <span>Deterministic Counter</span>
-                <span className="text-[#681F32] font-mono font-bold">No black-box AI score</span>
+                <span className="text-[#FBF8F1] font-bold">No black-box AI score</span>
               </div>
             </div>
           ))}
         </div>
 
         {/* Project Change Feed */}
-        <div className="p-6 rounded-2xl bg-[#F7F1E5] border border-[#CDBEA9] space-y-6">
-          <div className="flex items-center justify-between border-b border-[#CDBEA9] pb-4">
+        <div className="p-6 rounded-2xl bg-[#5C1D2D] border border-[#7A2940] space-y-6 shadow-md">
+          <div className="flex items-center justify-between border-b border-[#7A2940] pb-4">
             <div className="flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-[#681F32]" />
-              <h2 className="text-base font-bold text-[#4A1724]">Project Change Log</h2>
+              <Sparkles className="w-4 h-4 text-[#FBF8F1]" />
+              <h2 className="text-base font-bold text-[#FBF8F1]">Project Change Log</h2>
             </div>
-            <span className="text-xs font-mono text-[#96546A]">Audit Stream: Verified events only</span>
+            <span className="text-xs text-[#E9DFCE] font-medium">Audit Stream: Verified events only</span>
           </div>
 
           <div className="space-y-4">
             {recentChanges.map((change) => (
-              <div key={change.id} className="p-4 rounded-xl bg-[#FBF8F1] border border-[#CDBEA9] space-y-2 hover:border-[#7A2940] transition-all">
-                <div className="flex items-center justify-between text-xs font-mono">
-                  <span className="font-bold text-[#681F32]">{change.type}</span>
-                  <span className="text-[#96546A]">{change.date}</span>
+              <div key={change.id} className="p-4 rounded-xl bg-[#4A1724] border border-[#681F32] space-y-2 hover:border-[#7A2940] transition-all">
+                <div className="flex items-center justify-between text-xs font-semibold">
+                  <span className="font-bold text-[#FBF8F1]">{change.type}</span>
+                  <span className="text-[#E9DFCE]">{change.date}</span>
                 </div>
 
-                <h3 className="font-bold text-sm text-[#4A1724]">{change.title}</h3>
+                <h3 className="font-bold text-sm text-[#FBF8F1]">{change.title}</h3>
 
-                <div className="flex flex-wrap items-center gap-3 text-xs text-[#4A1724] bg-[#E9DFCE]/60 p-2.5 rounded-lg border border-[#CDBEA9]">
-                  <div>Previous: <code className="text-[#681F32] font-bold">{change.previous}</code></div>
+                <div className="flex flex-wrap items-center gap-3 text-xs text-[#FBF8F1] bg-[#5C1D2D] p-2.5 rounded-lg border border-[#7A2940] font-medium">
+                  <div>Previous: <code className="text-[#E9DFCE] font-bold">{change.previous}</code></div>
                   <span>→</span>
-                  <div>New: <code className="text-[#681F32] font-bold">{change.new}</code></div>
-                  <span className="text-[#96546A]">•</span>
-                  <div>Actor: <span className="text-[#4A1724] font-semibold">{change.actor}</span></div>
+                  <div>New: <code className="text-[#FBF8F1] font-bold">{change.new}</code></div>
+                  <span className="text-[#E9DFCE]">•</span>
+                  <div>Actor: <span className="text-[#FBF8F1] font-semibold">{change.actor}</span></div>
                 </div>
 
-                <div className="text-[11px] text-[#96546A] font-mono pt-1">
+                <div className="text-[11px] text-[#E9DFCE] pt-1 font-medium">
                   Evidence: {change.evidence}
                 </div>
               </div>

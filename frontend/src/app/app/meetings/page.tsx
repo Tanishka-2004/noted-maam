@@ -4,7 +4,6 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Navigation } from "../../../components/Navigation";
 import { TrustBadge } from "../../../components/TrustBadge";
-import { DemoModeBanner } from "../../../components/DemoModeBanner";
 import { useAppMode } from "../../../context/AppModeContext";
 import { fetchLiveMeetings, RealMeeting } from "../../../lib/api-client";
 import { 
@@ -15,8 +14,7 @@ import {
   Clock, 
   ArrowRight, 
   Search, 
-  Plus,
-  RefreshCw
+  Plus
 } from "lucide-react";
 
 export default function AppMeetingsPage() {
@@ -24,14 +22,11 @@ export default function AppMeetingsPage() {
   const [activeTab, setActiveTab] = useState<"all" | "unassigned" | "assigned">("all");
   const [searchTerm, setSearchTerm] = useState("");
   const [realMeetings, setRealMeetings] = useState<RealMeeting[]>([]);
-  const [loadingReal, setLoadingReal] = useState(false);
 
   useEffect(() => {
     if (mode === "REAL") {
-      setLoadingReal(true);
       fetchLiveMeetings().then(data => {
         setRealMeetings(data);
-        setLoadingReal(false);
       });
     }
   }, [mode]);
@@ -92,67 +87,66 @@ export default function AppMeetingsPage() {
   const filtered = meetings.filter(m => m.title.toLowerCase().includes(searchTerm.toLowerCase()));
 
   return (
-    <div className="min-h-screen bg-[#FBF8F1] text-[#4A1724] pb-16">
-      <DemoModeBanner />
+    <div className="min-h-screen bg-[#4A1724] text-[#FBF8F1] pb-16 font-sans">
       <Navigation />
 
       <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 space-y-8">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#CDBEA9] pb-6">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#681F32] pb-6">
           <div>
-            <div className="flex items-center gap-2 text-xs font-mono text-[#681F32] font-bold mb-1">
-              <Video className="w-4 h-4 text-[#681F32]" />
-              <span>Meeting Directory & Ingestion Hub ({mode === "DEMO" ? "Demo Mode" : "Real-World Mode"})</span>
+            <div className="flex items-center gap-2 text-xs font-semibold text-[#E9DFCE] mb-1">
+              <Video className="w-4 h-4 text-[#FBF8F1]" />
+              <span>Meeting Directory & Ingestion Hub</span>
             </div>
-            <h1 className="text-3xl font-extrabold text-[#4A1724] tracking-tight">Meetings & Ingestion Hub</h1>
-            <p className="text-xs text-[#96546A] font-medium mt-1">Upload meeting recordings first; assign to primary projects anytime.</p>
+            <h1 className="text-3xl font-extrabold text-[#FBF8F1] tracking-tight font-display">Meetings & Ingestion Hub</h1>
+            <p className="text-xs text-[#E9DFCE] font-medium mt-1">Upload meeting recordings first; assign to primary projects anytime.</p>
           </div>
 
           <Link
             href="/onboarding"
-            className="px-4 py-2.5 rounded-xl bg-[#681F32] hover:bg-[#4A1724] text-[#FBF8F1] font-semibold text-xs flex items-center gap-2 transition-all shadow-md"
+            className="px-4 py-2.5 rounded-xl bg-[#FBF8F1] hover:bg-[#F7F1E5] text-[#4A1724] font-bold text-xs flex items-center gap-2 transition-all shadow-md"
           >
-            <Plus className="w-4 h-4 text-[#FBF8F1]" />
+            <Plus className="w-4 h-4 text-[#4A1724]" />
             <span>Upload New Recording</span>
           </Link>
         </div>
 
         {/* Search Bar */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2 bg-[#E9DFCE] p-1 rounded-xl border border-[#CDBEA9] w-full sm:w-auto">
+          <div className="flex items-center gap-2 bg-[#5C1D2D] p-1 rounded-xl border border-[#7A2940] w-full sm:w-auto">
             <button
               onClick={() => setActiveTab("all")}
-              className="px-4 py-2 rounded-lg text-xs font-semibold bg-[#681F32] text-[#FBF8F1]"
+              className="px-4 py-2 rounded-lg text-xs font-bold bg-[#FBF8F1] text-[#4A1724]"
             >
-              {mode === "DEMO" ? `All Demo Meetings (${meetings.length})` : `Real Meetings (${meetings.length})`}
+              All Meetings ({meetings.length})
             </button>
           </div>
 
           <div className="relative w-full sm:w-72">
-            <Search className="w-4 h-4 text-[#96546A] absolute left-3 top-2.5" />
+            <Search className="w-4 h-4 text-[#E9DFCE] absolute left-3 top-2.5" />
             <input
               type="text"
               placeholder="Search meetings by title..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full bg-[#FBF8F1] border border-[#CDBEA9] rounded-xl pl-9 pr-4 py-2 text-xs text-[#4A1724] outline-none focus:border-[#681F32]"
+              className="w-full bg-[#5C1D2D] border border-[#7A2940] rounded-xl pl-9 pr-4 py-2 text-xs text-[#FBF8F1] outline-none focus:border-[#FBF8F1] placeholder:text-[#E9DFCE]/60 font-medium"
             />
           </div>
         </div>
 
         {/* Real Mode Empty State vs Data List */}
         {mode === "REAL" && meetings.length === 0 ? (
-          <div className="p-12 rounded-2xl bg-white border border-[#CDBEA9] text-center space-y-4">
-            <Video className="w-12 h-12 text-[#681F32] mx-auto opacity-80" />
-            <h3 className="text-lg font-bold text-[#4A1724]">No Real Meetings Found in Database</h3>
-            <p className="text-xs text-[#96546A] max-w-md mx-auto">
-              Your real-world database is connected at `localhost:8000`. Upload your first audio recording to extract diarized transcripts, action items, and decision lineage.
+          <div className="p-12 rounded-2xl bg-[#5C1D2D] border border-[#7A2940] text-center space-y-4 shadow-md">
+            <Video className="w-12 h-12 text-[#FBF8F1] mx-auto opacity-80" />
+            <h3 className="text-lg font-bold text-[#FBF8F1]">No Real Meetings Found in Database</h3>
+            <p className="text-xs text-[#E9DFCE] max-w-md mx-auto">
+              Your live workspace is active. Upload your first audio recording to extract diarized transcripts, action items, and decision lineage.
             </p>
             <div className="pt-2">
               <Link
                 href="/onboarding"
-                className="px-5 py-2.5 rounded-xl bg-[#681F32] hover:bg-[#4A1724] text-[#FBF8F1] font-semibold text-xs inline-flex items-center gap-2 shadow-md"
+                className="px-5 py-2.5 rounded-xl bg-[#FBF8F1] hover:bg-[#F7F1E5] text-[#4A1724] font-bold text-xs inline-flex items-center gap-2 shadow-md"
               >
-                <Plus className="w-4 h-4" />
+                <Plus className="w-4 h-4 text-[#4A1724]" />
                 <span>Upload First Recording</span>
               </Link>
             </div>
@@ -160,18 +154,18 @@ export default function AppMeetingsPage() {
         ) : (
           <div className="grid grid-cols-1 gap-4">
             {filtered.map((meeting) => (
-              <div key={meeting.id} className="p-6 rounded-2xl bg-[#F7F1E5] border border-[#CDBEA9] space-y-4 hover:border-[#7A2940] transition-all">
+              <div key={meeting.id} className="p-6 rounded-2xl bg-[#5C1D2D] border border-[#7A2940] space-y-4 hover:border-[#96546A] transition-all shadow-md">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                   <div>
                     <div className="flex items-center gap-2 mb-1.5">
-                      <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-[#681F32] text-[#FBF8F1]">
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#FBF8F1] text-[#4A1724]">
                         {meeting.project}
                       </span>
                       <TrustBadge state={meeting.status === "READY" ? "CONFIRMED" : "PARTIAL"} customLabel={meeting.status} />
                     </div>
 
-                    <h3 className="text-base font-bold text-[#4A1724]">{meeting.title}</h3>
-                    <div className="flex items-center gap-4 text-xs text-[#96546A] mt-1 font-mono">
+                    <h3 className="text-base font-bold text-[#FBF8F1]">{meeting.title}</h3>
+                    <div className="flex items-center gap-4 text-xs text-[#E9DFCE] mt-1 font-medium">
                       <span>{meeting.date}</span>
                       <span>•</span>
                       <span>Duration: {meeting.duration}</span>
@@ -183,10 +177,10 @@ export default function AppMeetingsPage() {
                   <div className="flex items-center gap-3">
                     <Link
                       href={`/app/meetings/${meeting.id}`}
-                      className="px-4 py-2 rounded-xl bg-[#681F32] hover:bg-[#4A1724] text-[#FBF8F1] text-xs font-semibold flex items-center gap-1.5 shadow-md"
+                      className="px-4 py-2 rounded-xl bg-[#FBF8F1] hover:bg-[#F7F1E5] text-[#4A1724] text-xs font-bold flex items-center gap-1.5 shadow-md"
                     >
                       <span>Open Outcome Workspace</span>
-                      <ArrowRight className="w-3.5 h-3.5 text-[#FBF8F1]" />
+                      <ArrowRight className="w-3.5 h-3.5 text-[#4A1724]" />
                     </Link>
                   </div>
                 </div>
