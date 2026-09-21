@@ -22,8 +22,8 @@ export function Navigation() {
 
   const navItems = [
     { label: "Home", path: "/app/home", icon: Home },
-    { label: "Meetings", path: "/app/meetings", icon: Video, badge: "1 Inbox" },
-    { label: "Work", path: "/app/work", icon: CheckSquare, badge: "2 Verify" },
+    { label: "Meetings", path: "/app/meetings", icon: Video, badge: mode === "DEMO" ? "1 Inbox" : undefined },
+    { label: "Work", path: "/app/work", icon: CheckSquare, badge: mode === "DEMO" ? "2 Verify" : undefined },
     { label: "Projects", path: "/app/projects", icon: Activity },
     { label: "Knowledge", path: "/app/knowledge", icon: BookOpen },
     { label: "Settings", path: "/app/settings", icon: Settings },
