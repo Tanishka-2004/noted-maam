@@ -16,8 +16,8 @@ export function TrustBadge({ state, customLabel, size = "sm" }: TrustBadgeProps)
 
   if (state === "CONFIRMED") {
     return (
-      <span className={`font-mono font-bold rounded-md bg-emerald-100 border border-emerald-400 text-emerald-950 flex items-center gap-1.5 inline-flex shadow-sm ${sizeClasses}`}>
-        <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse shrink-0" />
+      <span className={`font-sans font-semibold rounded-lg bg-emerald-100 border border-emerald-400 text-emerald-950 flex items-center gap-1.5 inline-flex shadow-xs ${sizeClasses}`}>
+        <span className="w-2 h-2 rounded-full bg-emerald-600 shrink-0" />
         <Check className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
         <span>{customLabel || "CONFIRMED · Human verified"}</span>
       </span>
@@ -26,7 +26,7 @@ export function TrustBadge({ state, customLabel, size = "sm" }: TrustBadgeProps)
 
   if (state === "CONFLICTING") {
     return (
-      <span className={`font-mono font-bold rounded-md bg-amber-100 border border-amber-400 text-amber-950 flex items-center gap-1.5 inline-flex shadow-sm ${sizeClasses}`}>
+      <span className={`font-sans font-semibold rounded-lg bg-amber-100 border border-amber-400 text-amber-950 flex items-center gap-1.5 inline-flex shadow-xs ${sizeClasses}`}>
         <span className="w-2 h-2 rounded-full bg-amber-500 shrink-0" />
         <AlertTriangle className="w-3.5 h-3.5 text-amber-700 shrink-0" />
         <span>{customLabel || "CONFLICTING · Sources disagree"}</span>
@@ -36,7 +36,7 @@ export function TrustBadge({ state, customLabel, size = "sm" }: TrustBadgeProps)
 
   if (state === "PARTIAL") {
     return (
-      <span className={`font-mono font-bold rounded-md bg-rose-100 border border-rose-400 text-rose-950 flex items-center gap-1.5 inline-flex shadow-sm ${sizeClasses}`}>
+      <span className={`font-sans font-semibold rounded-lg bg-rose-100 border border-rose-400 text-rose-950 flex items-center gap-1.5 inline-flex shadow-xs ${sizeClasses}`}>
         <span className="w-2 h-2 rounded-full bg-rose-600 shrink-0" />
         <AlertCircle className="w-3.5 h-3.5 text-rose-700 shrink-0" />
         <span>{customLabel || "PARTIAL · Extraction Incomplete"}</span>
@@ -45,7 +45,7 @@ export function TrustBadge({ state, customLabel, size = "sm" }: TrustBadgeProps)
   }
 
   return (
-    <span className={`font-mono font-bold rounded-md bg-[#E9DFCE] text-[#4A1724] border border-[#CDBEA9] flex items-center gap-1.5 inline-flex shadow-sm ${sizeClasses}`}>
+    <span className={`font-sans font-semibold rounded-lg bg-[#E9DFCE] text-[#4A1724] border border-[#CDBEA9] flex items-center gap-1.5 inline-flex shadow-xs ${sizeClasses}`}>
       <HelpCircle className="w-3.5 h-3.5 text-[#96546A] shrink-0" />
       <span>{customLabel || "UNKNOWN · Insufficient evidence"}</span>
     </span>

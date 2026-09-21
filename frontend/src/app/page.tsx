@@ -3,7 +3,6 @@
 import React from "react";
 import Link from "next/link";
 import { Navigation } from "../components/Navigation";
-import { DemoModeBanner } from "../components/DemoModeBanner";
 import { 
   Sparkles, 
   ArrowRight, 
@@ -23,7 +22,7 @@ import {
 export default function LandingPage() {
   const sixPartLoop = [
     { title: "1. Capture", desc: "Multilingual audio & meeting transcript ingestion with speaker diarization." },
-    { title: "2. Understand", desc: "Extract commitments, decisions, and conflicts using Whisper & GPT-4o." },
+    { title: "2. Understand", desc: "Extract commitments, decisions, and conflicts using Whisper & AI extractors." },
     { title: "3. Verify", desc: "Human evidence gate: 'AI proposes, humans decide' before updating reality." },
     { title: "4. Execute", desc: "Idempotent 2-way sync into Jira, Slack, and Linear with version tracking." },
     { title: "5. Remember", desc: "Permission-gated vector index with immutable transcript citation links." },
@@ -32,16 +31,10 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-[#FBF8F1] text-[#4A1724] bg-mesh-warm selection:bg-[#681F32] selection:text-[#FBF8F1]">
-      <DemoModeBanner />
       <Navigation />
 
       {/* Hero Section */}
       <section className="relative pt-16 pb-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto text-center">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#E9DFCE] border border-[#CDBEA9] text-[#681F32] text-xs font-mono font-bold mb-8 animate-pulse-subtle">
-          <Sparkles className="w-3.5 h-3.5 text-[#681F32]" />
-          <span>Burgundy & Cream Editorial Visual Identity</span>
-        </div>
-
         <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight text-[#4A1724] max-w-4xl mx-auto leading-tight font-display">
           Turn conversations into <span className="text-[#681F32] underline decoration-[#96546A]">verified decisions</span>, accountable commitments, and searchable project memory.
         </h1>
@@ -69,11 +62,11 @@ export default function LandingPage() {
         </div>
 
         {/* Governing Principle Banner */}
-        <div className="mt-12 max-w-2xl mx-auto p-5 rounded-xl bg-[#F7F1E5] border border-[#CDBEA9] text-left flex items-start gap-3 shadow-sm">
+        <div className="mt-12 max-w-2xl mx-auto p-5 rounded-xl bg-[#F7F1E5] border border-[#CDBEA9] text-left flex items-start gap-3 shadow-xs">
           <Lock className="w-5 h-5 text-[#681F32] shrink-0 mt-0.5" />
           <div>
-            <span className="text-xs font-bold text-[#681F32] uppercase tracking-wide block font-mono">Core Governance Principle</span>
-            <p className="text-xs text-[#4A1724] mt-0.5 leading-normal">
+            <span className="text-xs font-bold text-[#681F32] uppercase tracking-wide block font-sans">Core Governance Principle</span>
+            <p className="text-xs text-[#4A1724] mt-0.5 leading-normal font-medium">
               <strong>"AI proposes, humans decide."</strong> Noted Ma'am detects signals and quotes evidence, but cannot silently alter project commitments or legal decisions without explicit human verification.
             </p>
           </div>
@@ -91,15 +84,15 @@ export default function LandingPage() {
           {sixPartLoop.map((item, i) => (
             <div key={i} className="p-6 rounded-2xl bg-[#F7F1E5] border border-[#CDBEA9] hover:border-[#7A2940] transition-all space-y-2">
               <h3 className="font-bold text-sm text-[#681F32]">{item.title}</h3>
-              <p className="text-xs text-[#4A1724] leading-relaxed">{item.desc}</p>
+              <p className="text-xs text-[#4A1724] leading-relaxed font-medium">{item.desc}</p>
             </div>
           ))}
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="py-8 border-t border-[#CDBEA9] text-center text-xs text-[#96546A] font-mono">
-        <p>Noted Ma'am — Burgundy & Cream Visual System — Editorial B2B Product Architecture</p>
+      <footer className="py-8 border-t border-[#CDBEA9] text-center text-xs text-[#96546A] font-medium">
+        <p>Noted Ma'am — Enterprise Meeting Operating System</p>
       </footer>
     </div>
   );
